@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "902886768302",
+    "firebase_url": "https://first-219bf.firebaseio.com",
+    "project_id": "first-219bf",
+    "storage_bucket": "first-219bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902886768302:android:6014be0b5fd0933c",
+        "android_client_info": {
+          "package_name": "michal.edu.answers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902886768302-o0d227bl1hta7ggpj7f75bvd0daahumc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkUbyFbgxW0ddbfP6HHyjPE7ySGYI4iY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902886768302-o0d227bl1hta7ggpj7f75bvd0daahumc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902886768302:android:5e76c2eee6278075",
+        "android_client_info": {
+          "package_name": "michal.edu.first"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902886768302-m0nvnafvqupq4vsffnovs09fqgubipnm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "michal.edu.first",
+            "certificate_hash": "15e9e70d9fe87c209b7c95388e2deab33dd09245"
+          }
+        },
+        {
+          "client_id": "902886768302-o0d227bl1hta7ggpj7f75bvd0daahumc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkUbyFbgxW0ddbfP6HHyjPE7ySGYI4iY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902886768302-o0d227bl1hta7ggpj7f75bvd0daahumc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902886768302:android:5a01a224a19bb16b",
+        "android_client_info": {
+          "package_name": "michal.edu.survey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902886768302-o0d227bl1hta7ggpj7f75bvd0daahumc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkUbyFbgxW0ddbfP6HHyjPE7ySGYI4iY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902886768302-o0d227bl1hta7ggpj7f75bvd0daahumc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
