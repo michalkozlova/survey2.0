@@ -46,8 +46,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").push();
-        ref.setValue("Im here!");
+        
     }
 
     @Override
