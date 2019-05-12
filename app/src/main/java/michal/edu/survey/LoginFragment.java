@@ -69,9 +69,7 @@ public class LoginFragment extends Fragment {
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffEA4C5F"));
 
-        //TODO: why it doesn't work?!
-        //bottomBar.clearAnimation();
-        bottomBar.animate().translationY(bottomBar.getHeight()).setDuration(400);
+        bottomBar.setVisibility(View.INVISIBLE);
     }
 
     private void goToRegistration() {
@@ -116,8 +114,7 @@ public class LoginFragment extends Fragment {
 
     private void proceedToStatistics() {
         showProgress(false);
-
-        bottomBar.animate().translationY(0).setDuration(400);
+        bottomBar.setVisibility(View.VISIBLE);
 
         getActivity()
                 .getSupportFragmentManager()

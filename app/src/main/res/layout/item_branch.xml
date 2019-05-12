@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/yellow">
+
+    <Button
+        android:id="@+id/whiteButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/white_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        android:enabled="false"/>
+
+    <Button
+        android:id="@+id/pinkButton"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:background="@drawable/pink_button"
+        app:layout_constraintBottom_toBottomOf="@+id/whiteButton"
+        app:layout_constraintStart_toStartOf="@+id/whiteButton"
+        app:layout_constraintTop_toTopOf="@+id/whiteButton"
+        app:layout_constraintVertical_bias="0.0"
+        android:enabled="false"/>
+
+    <Button
+        android:id="@+id/smallWhiteButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Sushi Rehavia / German Colony"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:background="#00ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/whiteButton"
+        app:layout_constraintEnd_toEndOf="@+id/whiteButton"
+        app:layout_constraintStart_toEndOf="@+id/pinkButton"
+        app:layout_constraintTop_toTopOf="@+id/whiteButton" />
+
+</android.support.constraint.ConstraintLayout>
