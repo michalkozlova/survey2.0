@@ -1,0 +1,107 @@
+{
+  "questionnaire":[
+    {
+      "sectionTitle": "Restaurant Appearance",
+      "listOfQuestions":[
+        {
+          "question": "Was the restaurant's outside appearance attractive - Did the restaurant have curb appeal?",
+          "type": 1
+        },
+        {
+          "question": "Did the outside appear to be clean - clear sidewalks, clean windows and doors, etc.?",
+          "type": 1
+        },
+        {
+          "question": "Was the restaurant clean and attractive inside?",
+          "type": 0
+        },
+        {
+          "question": "Was the host/hostess area attractive and spacious?",
+          "type": 1
+        },
+        {
+          "question": "How did you feel about the overall appearance of the restaurant?",
+          "type": 1
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Restaurant Staff",
+      "listOfQuestions": [
+        {
+          "question": "Were you promptly greeted by the host/hostess?",
+          "type": 1
+        },
+        {
+          "question": "Was the greeting friendly & professional?",
+          "type": 1
+        },
+        {
+          "question": "Were you seated promptly?",
+          "type": 0
+        },
+        {
+          "question": "If the host was occupied, did the host/hostess let you know that he/she would be right with you?",
+          "type": 0
+        },
+        {
+          "question": "Was the server knowledgeable about the menu selection?",
+          "type": 1
+        },
+        {
+          "question": "Did the server suggest a beverage or appetizer?",
+          "type": 0
+        },
+        {
+          "question": "Was the server's appearance appropriate to the nature of the restaurant?",
+          "type": 1
+        },
+        {
+          "question": "Did the food arrive in a timely fashion?",
+          "type": 0
+        },
+        {
+          "question": "Did the server check back with you during the course of your meal?",
+          "type": 0
+        },
+        {
+          "question": "Were the plates cleared at the end of your meal?",
+          "type": 0
+        },
+        {
+          "question": "Was the bill settled in a timely fashion?",
+          "type": 0
+        },
+        {
+          "question": "What was your overall experience with the customer service?",
+          "type": 1
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Food",
+      "listOfQuestions":[
+        {
+          "question": "What is your overall impression of the menu selection?",
+          "type": 1
+        },
+        {
+          "question": "Did your meal arrive as ordered?",
+          "type": 0
+        },
+        {
+          "question": "How would you rate the overall food presentation?",
+          "type": 1
+        },
+        {
+          "question": "Did the food meet expectations, i.e. quality, temperature?",
+          "type": 0
+        },
+        {
+          "question": "Was the menu item a good value for the price?",
+          "type": 0
+        }
+      ]
+    }
+  ]
+}

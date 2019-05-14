@@ -1,0 +1,99 @@
+{
+  "questionnaire":[
+    {
+      "sectionTitle": "Store Appearance",
+      "listOfQuestions":[
+        {
+          "question": "Was the store's appearance attractive - Did the store have curb appeal?",
+          "type": 1
+        },
+        {
+          "question": "Was the window display inviting and attractive?",
+          "type": 1
+        },
+        {
+          "question": "Did the outside appear to be clean - clear sidewalks, clean windows and doors, etc.?",
+          "type": 0
+        },
+        {
+          "question": "Was the store's inside clean and attractive?",
+          "type": 1
+        },
+        {
+          "question": "Was the store easy to shop and well-organized?",
+          "type": 1
+        },
+        {
+          "question": "How did you feel about the overall appearance of the store?",
+          "type": 1
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Store Clerk",
+      "listOfQuestions": [
+        {
+          "question": "Were you promptly greeted?",
+          "type": 1
+        },
+        {
+          "question": "Was the greeting friendly & professional?",
+          "type": 1
+        },
+        {
+          "question": "If the store clerk was occupied, did the store clerk let you know that he/she would be right with you?",
+          "type": 0
+        },
+        {
+          "question": "Did the store clerk ask good questions to find out what you were looking for?",
+          "type": 1
+        },
+        {
+          "question": "Was the store clerk knowledgeable about the merchandise?",
+          "type": 1
+        },
+        {
+          "question": "Was the employee's appearance appropriate to the nature of the store?",
+          "type": 1
+        },
+        {
+          "question": "Was the checkout experience positive?",
+          "type": 1
+        },
+        {
+          "question": "Did the store clerk thank you upon completion of your purchase?",
+          "type": 1
+        },
+        {
+          "question": "What was your overall experience with the staff in the store?",
+          "type": 1
+        }
+      ]
+    },
+    {
+      "sectionTitle": "Merchandise",
+      "listOfQuestions":[
+        {
+          "question": "How would you rate your first impression of the store?",
+          "type": 1
+        },
+        {
+          "question": "Was the store merchandise arranged in an orderly & neat manner?",
+          "type": 0
+        },
+        {
+          "question": "Was the merchandise fresh & inviting?",
+          "type": 1
+        },
+        {
+          "question": "Was product priced and easy to read?",
+          "type": 1
+        },
+        {
+          "question": "What is your overall opinion of the merchandise selection?",
+          "type": 1
+        }
+      ]
+    }
+  ]
+}

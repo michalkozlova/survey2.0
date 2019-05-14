@@ -14,13 +14,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.NetworkPolicy;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import michal.edu.survey.Models.Branch;
+import michal.edu.survey.Models.FullQuestionnaire;
+import michal.edu.survey.Models.Store;
 
 public class DataSource {
 
@@ -35,7 +43,7 @@ public class DataSource {
     }
 
     public ArrayList<Branch> getBranchesFromFirebase(String userID, final BranchListener callback){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(userID).child("Branches");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(userID).child("branches");
         final ArrayList<Branch> mBranches = new ArrayList<>();
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -49,6 +57,7 @@ public class DataSource {
                     System.out.println("no branches");
                 }else {
                     callback.onBranchCallback(mBranches);
+                    System.out.println(mBranches);
                 }
             }
 
@@ -61,9 +70,10 @@ public class DataSource {
         return mBranches;
     }
 
-    public ArrayList<String> getStoreName(String userID, final ImageView imageView, final TextView firstLetter, final Context context){
+    public ArrayList<String> getStoreNameAndBranches(String userID, final ImageView imageView, final TextView firstLetter, final Context context){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(userID).child("storeName");
         final ArrayList<String> mStoreName = new ArrayList<>();
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -95,20 +105,34 @@ public class DataSource {
         return mStoreName;
     }
 
-    public void getStoreLogoFromFirebase(final String storeName, final ImageView imageView, final TextView firstLetter, final Context context){
-        StorageReference storageRef = MyImageStorage.getInstance();
+    public FullQuestionnaire getQuestionnaireFromJson(int storeType, Context context){
+        int x;
+        if (storeType == Store.STORE_RESTAURANT) {
+            x = R.raw.sample_questionnaire_restaurant;
+        }else {
+            x = R.raw.sample_questionnaire_retail;
+        }
 
-        storageRef.child(storeName+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.with(context).load(uri).networkPolicy(NetworkPolicy.OFFLINE).into(imageView);
-                firstLetter.setText("");
+        InputStream resourceReader = context.getResources().openRawResource(x);
+        Writer writer = new StringWriter();
+
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resourceReader, "UTF-8"));
+            String line = reader.readLine();
+            while (line != null) {
+                writer.write(line);
+                line = reader.readLine();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                firstLetter.setText(Character.toString(storeName.charAt(0)));
-            }
-        });
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String jsonString = writer.toString();
+
+        Gson gson = new Gson();
+        return gson.fromJson(jsonString, FullQuestionnaire.class);
     }
+
 }

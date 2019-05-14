@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import android.widget.EditText;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -30,6 +30,7 @@ public class LoginFragment extends Fragment {
     private EditText etEmail, etPassword;
     private Button btnLogin, btnRegistration;
     private View bottomBar;
+    private FragmentManager manager;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -42,6 +43,8 @@ public class LoginFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
         setInitialView(v);
+
+        manager = getFragmentManager();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +66,7 @@ public class LoginFragment extends Fragment {
     private void setInitialView(View v){
         etEmail = v.findViewById(R.id.etEmail);
         etPassword = v.findViewById(R.id.etPassword);
-        btnLogin = v.findViewById(R.id.btnLogin);
+        btnLogin = v.findViewById(R.id.btnContinue);
         btnRegistration = v.findViewById(R.id.btnRegistration);
         bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
 
@@ -92,7 +95,14 @@ public class LoginFragment extends Fragment {
         task.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                proceedToStatistics();
+                showProgress(false);
+                bottomBar.setVisibility(View.VISIBLE);
+
+                manager
+                        .beginTransaction()
+                        .replace(R.id.container, new StatisticsFragment())
+                        .disallowAddToBackStack()
+                        .commit();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -112,17 +122,17 @@ public class LoginFragment extends Fragment {
         }).show();
     }
 
-    private void proceedToStatistics() {
-        showProgress(false);
-        bottomBar.setVisibility(View.VISIBLE);
-
-        getActivity()
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, new StatisticsFragment())
-                .disallowAddToBackStack()
-                .commit();
-    }
+//    private void proceedToStatistics() {
+//        showProgress(false);
+//        bottomBar.setVisibility(View.VISIBLE);
+//
+//        getActivity()
+//                .getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.container, new StatisticsFragment())
+//                .disallowAddToBackStack()
+//                .commit();
+//    }
 
     String email(){return etEmail.getText().toString();}
     String password(){return etPassword.getText().toString();}

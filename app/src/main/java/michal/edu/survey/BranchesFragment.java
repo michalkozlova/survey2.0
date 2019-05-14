@@ -68,9 +68,7 @@ public class BranchesFragment extends Fragment {
             }
         });
 
-        //dataSource.getStoreLogoFromFirebase(dataSource.getStoreName(userID).get(0), cardImage, firstLetter, getContext());
-
-        dataSource.getStoreName(userID, cardImage, firstLetter, getContext());
+        dataSource.getStoreNameAndBranches(userID, cardImage, firstLetter, getContext());
 
         return v;
     }

@@ -9,9 +9,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#3E44FA"
-        android:minHeight="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnContinue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -81,7 +80,7 @@
         android:layout_marginEnd="32dp"
         android:background="@drawable/btn_login"
         android:text="login"
-        android:textColor="#3555A2"
+        android:textColor="@color/blue"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/etPassword"
@@ -101,6 +100,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/btnContinue" />
 
 </android.support.constraint.ConstraintLayout>
