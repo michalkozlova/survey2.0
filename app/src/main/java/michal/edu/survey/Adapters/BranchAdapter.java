@@ -1,4 +1,4 @@
-package michal.edu.survey;
+package michal.edu.survey.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.util.List;
 import michal.edu.survey.Models.Branch;
+import michal.edu.survey.R;
 
 public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchViewHolder>{
 

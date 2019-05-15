@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import michal.edu.survey.Adapters.BranchAdapter;
 import michal.edu.survey.Models.Branch;
 
 
