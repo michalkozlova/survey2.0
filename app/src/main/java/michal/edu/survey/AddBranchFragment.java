@@ -28,10 +28,14 @@ public class AddBranchFragment extends Fragment {
     private String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-    public AddBranchFragment() {
-        // Required empty public constructor
-    }
+    public static AddBranchFragment newInstance(int branchPosition) {
 
+        Bundle args = new Bundle();
+        args.putSerializable("branchPosition", branchPosition);
+        AddBranchFragment fragment = new AddBranchFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +49,8 @@ public class AddBranchFragment extends Fragment {
         etCity = v.findViewById(R.id.etCity);
         etPhoneNumber = v.findViewById(R.id.etPhoneNumber);
 
+        final int branchPosition = (int) getArguments().getSerializable("branchPosition");
+
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,8 +63,16 @@ public class AddBranchFragment extends Fragment {
                 Address newAdress = new Address(city(), street(), Integer.valueOf(num()));
                 Branch newBranch = new Branch(branchName(), branchPhone(), newAdress);
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(userID).child("branches").child(branchName());
+                DatabaseReference reference = FirebaseDatabase
+                        .getInstance()
+                        .getReference()
+                        .child("Stores")
+                        .child(userID)
+                        .child("branches")
+                        .child(String.valueOf(branchPosition));
                 reference.setValue(newBranch);
+
+                showProgress(false);
 
                 getActivity()
                         .getSupportFragmentManager()

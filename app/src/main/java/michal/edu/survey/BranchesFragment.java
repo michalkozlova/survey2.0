@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import michal.edu.survey.Adapters.BranchAdapter;
 import michal.edu.survey.Models.Branch;
@@ -33,6 +35,7 @@ public class BranchesFragment extends Fragment {
     private TextView firstLetter;
     private ImageView cardImage;
     private Button btnAddBranch;
+    private int branchesAmount;
 
     public static BranchesFragment newInstance(String userID) {
 
@@ -68,9 +71,19 @@ public class BranchesFragment extends Fragment {
                 if (branches.isEmpty()){
                     showProgress(false);
                 }else {
+                    //sort branches with ABC
+                    Collections.sort(branches, new Comparator<Branch>() {
+                        @Override
+                        public int compare(Branch o1, Branch o2) {
+                            return o1.getBranchName().compareTo(o2.getBranchName());
+                        }
+                    });
+
+
                     adapter = new BranchAdapter(userID, branches, getActivity());
                     rvBranches.setLayoutManager(new LinearLayoutManager(getContext()));
                     rvBranches.setAdapter(adapter);
+                    branchesAmount = branches.size();
                     showProgress(false);
                 }
             }
@@ -84,7 +97,7 @@ public class BranchesFragment extends Fragment {
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.container, new AddBranchFragment())
+                        .replace(R.id.container, AddBranchFragment.newInstance(branchesAmount))
                         .addToBackStack("")
                         .commit();
             }
