@@ -8,7 +8,7 @@
     tools:context=".BranchesFragment">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/allBranchesToolbar"
+        android:id="@+id/addBranchToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/blue"
@@ -27,9 +27,9 @@
         android:text="MY BRANCHES"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/allBranchesToolbar"
-        app:layout_constraintStart_toStartOf="@+id/allBranchesToolbar"
-        app:layout_constraintTop_toTopOf="@+id/allBranchesToolbar" />
+        app:layout_constraintBottom_toBottomOf="@+id/addBranchToolbar"
+        app:layout_constraintStart_toStartOf="@+id/addBranchToolbar"
+        app:layout_constraintTop_toTopOf="@+id/addBranchToolbar" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/blackCardView"
@@ -96,7 +96,7 @@
         android:textColorHint="@color/pink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allBranchesToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/addBranchToolbar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvBranches"
@@ -121,6 +121,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.85" />
+
+    <Button
+        android:id="@+id/btnAddBranch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="add branch"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -7,7 +7,6 @@ public class Store {
 
     private String storeName;
     private int storeType;
-    private String email;
     private String storeID;
 //    private ArrayList<Branch> branches;
 //    private ArrayList<Section> questionnaire;
@@ -15,10 +14,9 @@ public class Store {
     public Store() {
     }
 
-    public Store(String storeName, Integer storeType, String email, String storeID/*, ArrayList<Branch> branches, ArrayList<Section> questionnaire*/) {
+    public Store(String storeName, Integer storeType, String storeID/*, ArrayList<Branch> branches, ArrayList<Section> questionnaire*/) {
         this.storeName = storeName;
         this.storeType = storeType;
-        this.email = email;
         this.storeID = storeID;
 //        this.branches = branches;
 //        this.questionnaire = questionnaire;
@@ -38,14 +36,6 @@ public class Store {
 
     public void setStoreType(Integer storeType) {
         this.storeType = storeType;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getStoreID() {
@@ -77,7 +67,6 @@ public class Store {
         return "Store{" +
                 "storeName='" + storeName + '\'' +
                 ", storeType=" + storeType +
-                ", email='" + email + '\'' +
                 ", storeID='" + storeID + '\'' +
 //                ", branches=" + branches +
 //                ", questionnaire=" + questionnaire +

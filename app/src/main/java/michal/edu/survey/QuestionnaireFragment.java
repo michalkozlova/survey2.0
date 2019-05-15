@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import michal.edu.survey.Adapters.QuestionAdapter;
 import michal.edu.survey.Adapters.SectionAdapter;
 import michal.edu.survey.Models.FullQuestionnaire;
@@ -22,6 +26,7 @@ import michal.edu.survey.Models.FullQuestionnaire;
 public class QuestionnaireFragment extends Fragment {
 
     private DataSource dataSource = DataSource.getInstance();
+    private String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private FullQuestionnaire questionnaire;
     private RecyclerView rvQuestionnaire;
     private View bottomBar;
@@ -56,6 +61,21 @@ public class QuestionnaireFragment extends Fragment {
         SectionAdapter adapter = new SectionAdapter(questionnaire, getActivity());
         rvQuestionnaire.setLayoutManager(new LinearLayoutManager(getContext()));
         rvQuestionnaire.setAdapter(adapter);
+
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(currentUserID).child("questionnaire");
+                reference.setValue(questionnaire.getFullQuestionnaire());
+
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, BranchesFragment.newInstance(currentUserID))
+                        .disallowAddToBackStack()
+                        .commit();
+            }
+        });
 
         return v;
     }

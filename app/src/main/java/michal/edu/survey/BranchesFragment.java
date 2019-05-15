@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class BranchesFragment extends Fragment {
     private BranchAdapter adapter;
     private TextView firstLetter;
     private ImageView cardImage;
+    private Button btnAddBranch;
 
     public static BranchesFragment newInstance(String userID) {
 
@@ -50,6 +52,7 @@ public class BranchesFragment extends Fragment {
         rvBranches = v.findViewById(R.id.rvBranches);
         firstLetter = v.findViewById(R.id.firstLetter);
         cardImage = v.findViewById(R.id.cardImage);
+        btnAddBranch = v.findViewById(R.id.btnAddBranch);
 
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffFEDC32"));
@@ -62,14 +65,30 @@ public class BranchesFragment extends Fragment {
         dataSource.getBranchesFromFirebase(userID, new BranchListener() {
             @Override
             public void onBranchCallback(ArrayList<Branch> branches) {
-                adapter = new BranchAdapter(userID, branches, getActivity());
-                rvBranches.setLayoutManager(new LinearLayoutManager(getContext()));
-                rvBranches.setAdapter(adapter);
-                showProgress(false);
+                if (branches.isEmpty()){
+                    showProgress(false);
+                }else {
+                    adapter = new BranchAdapter(userID, branches, getActivity());
+                    rvBranches.setLayoutManager(new LinearLayoutManager(getContext()));
+                    rvBranches.setAdapter(adapter);
+                    showProgress(false);
+                }
             }
         });
 
         dataSource.getStoreNameAndBranches(userID, cardImage, firstLetter, getContext());
+
+        btnAddBranch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, new AddBranchFragment())
+                        .addToBackStack("")
+                        .commit();
+            }
+        });
 
         return v;
     }
