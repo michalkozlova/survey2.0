@@ -19,4 +19,14 @@
         <item>Restaurant</item>
     </string-array>
 
+    <string-array name="possibleActionsWithQuestion">
+        <item>Edit question text</item>
+        <item>Change the type</item>
+        <item>Delete</item>
+    </string-array>
+
+    <string-array name="questionTypes">
+        <item>Yes / No</item>
+        <item>Grade</item>
+    </string-array>
 </resources>

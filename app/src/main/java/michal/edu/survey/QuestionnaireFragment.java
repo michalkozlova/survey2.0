@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import michal.edu.survey.Adapters.QuestionAdapter;
@@ -23,6 +24,8 @@ public class QuestionnaireFragment extends Fragment {
     private DataSource dataSource = DataSource.getInstance();
     private FullQuestionnaire questionnaire;
     private RecyclerView rvQuestionnaire;
+    private View bottomBar;
+    private Button btnContinue;
 
 
     public static QuestionnaireFragment newInstance(int storeType) {
@@ -41,10 +44,12 @@ public class QuestionnaireFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_questionnaire, container, false);
 
         rvQuestionnaire = v.findViewById(R.id.rvQuestionnaire);
+        btnContinue = v.findViewById(R.id.btnContinue);
+        bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
+
+        bottomBar.setVisibility(View.INVISIBLE);
 
         final int thisStoreType = (int) getArguments().getSerializable("storeType");
-
-        System.out.println(dataSource.getQuestionnaireFromJson(thisStoreType, getContext()));
 
         questionnaire = dataSource.getQuestionnaireFromJson(thisStoreType, getContext());
 

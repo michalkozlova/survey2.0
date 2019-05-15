@@ -10,6 +10,15 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+import michal.edu.survey.Models.Section;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,6 +67,35 @@ public class MainActivity extends AppCompatActivity {
                 if(!isLoggedIn){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new LoginFragment()).commit();
                 }else {
+//                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Stores").child(currentUserID()).child("questionnaire");
+//                    final ArrayList<Section> mQuestionnaire = new ArrayList<>();
+//                    ref.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                                Section value = snapshot.getValue(Section.class);
+//                                mQuestionnaire.add(value);
+//                            }
+//
+//                            if (mQuestionnaire.isEmpty()){
+//                                getSupportFragmentManager()
+//                                        .beginTransaction()
+//                                        .replace(R.id.container, new QuestionnaireFragment())
+//                                        .commit();
+//                            } else {
+//                                getSupportFragmentManager()
+//                                        .beginTransaction()
+//                                        .replace(R.id.container, new StatisticsFragment())
+//                                        .commit();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                        }
+//                    });
+
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new StatisticsFragment()).commit();
                 }
             }

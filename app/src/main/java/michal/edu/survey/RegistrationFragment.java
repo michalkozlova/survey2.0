@@ -177,14 +177,15 @@ public class RegistrationFragment extends Fragment {
         task.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                User newUser = new User(firstName(), lastName(), email());
-                Store newStore = new Store(storeName(), storeType(), email(), userId);
-
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-
-                ref.child("Stores").child(userId).setValue(newStore);
-                ref.child("Users").child(userId).setValue(newUser);
+                
+//                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//                User newUser = new User(firstName(), lastName(), email());
+//                Store newStore = new Store(storeName(), storeType(), email(), userId);
+//
+//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+//
+//                ref.child("Stores").child(userId).setValue(newStore);
+//                ref.child("Users").child(userId).setValue(newUser);
 
                 showProgress(false);
 
