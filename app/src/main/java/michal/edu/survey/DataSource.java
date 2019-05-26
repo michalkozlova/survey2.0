@@ -291,7 +291,7 @@ public class DataSource {
                 if (mFeedbacks.isEmpty()){
                     System.out.println("no feedbacks");
                 }else {
-                    callback.onFeedbackListerner(mFeedbacks);
+                    callback.onFeedbackListener(mFeedbacks);
                 }
             }
 
@@ -302,5 +302,39 @@ public class DataSource {
         });
 
         return mFeedbacks;
+    }
+
+    public String getRatingForFeedback(Feedback feedback){
+        float ratingSum = 0;
+        float ratingAmount = 0;
+        float yesNoSum = 0;
+        float yesNoAmout = 0;
+
+        for (int i = 0; i < 3; i++) {
+            ArrayList<Answer> answers = feedback.getAnswerSections().get(i).getAnswers();
+            for (Answer answer : answers) {
+                if (answer.getQuestionType() == Question.ONE_FIVE){
+                    ratingSum+=answer.getAnswerValue();
+                    ratingAmount++;
+                } else {
+                    yesNoSum+=answer.getAnswerValue();
+                    yesNoAmout++;
+                }
+            }
+        }
+
+        float ratingAverage = ratingSum / ratingAmount;
+        System.out.println(ratingAverage);
+        float yesNoAverage = yesNoSum * 5 / yesNoAmout;
+        System.out.println(yesNoAverage);
+
+        float x = ratingAverage * (ratingAmount / (ratingAmount + yesNoAmout));
+        System.out.println(x);
+        float y = yesNoAverage * (yesNoAmout / (ratingAmount + yesNoAmout));
+        System.out.println(y);
+
+        float result = x + y;
+        String toShow = String.valueOf(result).substring(0,3);
+        return toShow;
     }
 }

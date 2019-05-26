@@ -3,12 +3,15 @@ package michal.edu.survey;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import michal.edu.survey.Adapters.FeedbackAdapter;
 import michal.edu.survey.Listeners.FeedbackListener;
 import michal.edu.survey.Models.Feedback;
 
@@ -19,6 +22,7 @@ import michal.edu.survey.Models.Feedback;
 public class AllFeedbacksFragment extends Fragment {
 
     private DataSource dataSource = DataSource.getInstance();
+    private RecyclerView rvFeedbacks;
 
     public static AllFeedbacksFragment newInstance(String userID) {
 
@@ -35,12 +39,17 @@ public class AllFeedbacksFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_all_feedbacks, container, false);
 
+        rvFeedbacks = v.findViewById(R.id.rvFeedbacks);
+
         final String userID = (String) getArguments().getSerializable("userID");
 
         dataSource.getAllFeedbacks(userID, new FeedbackListener() {
             @Override
-            public void onFeedbackListerner(ArrayList<Feedback> feedbacks) {
+            public void onFeedbackListener(ArrayList<Feedback> feedbacks) {
                 System.out.println(feedbacks);
+                FeedbackAdapter adapter = new FeedbackAdapter(feedbacks, getActivity());
+                rvFeedbacks.setLayoutManager(new LinearLayoutManager(getContext()));
+                rvFeedbacks.setAdapter(adapter);
             }
         });
 
