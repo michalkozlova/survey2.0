@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,9 +19,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import michal.edu.survey.Listeners.FloatResultListener;
 import michal.edu.survey.Login.LoginActivity;
-import michal.edu.survey.Login.LoginFragment;
 import michal.edu.survey.Models.Feedback;
+import michal.edu.survey.Models.Section;
 
 
 /**
@@ -82,14 +84,30 @@ public class StatisticsFragment extends Fragment {
 
         String userID = (String) getArguments().getSerializable("userID");
 
-//        queryTest(userID);
+        dataSource.getAverageForSection(userID, 0, new FloatResultListener() {
+            @Override
+            public void onResultListener(ArrayList<String> result) {
+                tvStatFirstSection.setText(result.get(0));
+            }
+        });
 
-        dataSource.getTotalAverage(userID);
+        dataSource.getAverageForSection(userID, 1, new FloatResultListener() {
+            @Override
+            public void onResultListener(ArrayList<String> result) {
+                tvStatSecondSection.setText(result.get(0));
+            }
+        });
 
+        dataSource.getAverageForSection(userID, 2, new FloatResultListener() {
+            @Override
+            public void onResultListener(ArrayList<String> result) {
+                tvStatThirdSection.setText(result.get(0));
+            }
+        });
 
-        dataSource.getAverageForSection(userID, 0, tvStatFirstSection, tvNameFirstSection);
-        dataSource.getAverageForSection(userID, 1, tvStatSecondSection, tvNameSecondSection);
-        dataSource.getAverageForSection(userID, 2, tvStatThirdSection, tvNameThirdSection);
+        tvNameFirstSection.setText(Section.RESTAURANT_APPEARANCE_1);
+        tvNameSecondSection.setText(Section.RESTAURANT_STAFF_2);
+        tvNameThirdSection.setText(Section.RESTAURANT_FOOD_3);
 
         return v;
     }

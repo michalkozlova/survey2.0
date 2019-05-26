@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public class Section implements Serializable {
 
-    public final static String STORE_APPEARANCE = "Store Appearance";
-    public final static String STORE_CLERK = "Store Clerk";
-    public final static String STORE_MERCHANDISE = "Merchandise";
+    public final static String STORE_APPEARANCE_1 = "Store Appearance";
+    public final static String STORE_CLERK_2 = "Store Clerk";
+    public final static String STORE_MERCHANDISE_3 = "Merchandise";
 
-    public final static String RESTAURANT_APPEARANCE = "Restaurant Appearance";
-    public final static String RESTAURANT_STAFF = "Restaurant Staff";
-    public final static String RESTAURANT_FOOD = "Food";
+    public final static String RESTAURANT_APPEARANCE_1 = "Restaurant Appearance";
+    public final static String RESTAURANT_STAFF_2 = "Restaurant Staff";
+    public final static String RESTAURANT_FOOD_3 = "Food";
 
     @SerializedName("sectionTitle")
     private String sectionName;

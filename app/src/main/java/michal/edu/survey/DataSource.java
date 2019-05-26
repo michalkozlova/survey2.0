@@ -26,12 +26,14 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 
+import michal.edu.survey.Listeners.BranchListener;
+import michal.edu.survey.Listeners.FeedbackListener;
+import michal.edu.survey.Listeners.FloatResultListener;
 import michal.edu.survey.Models.Answer;
 import michal.edu.survey.Models.Branch;
 import michal.edu.survey.Models.Feedback;
 import michal.edu.survey.Models.FullQuestionnaire;
 import michal.edu.survey.Models.Question;
-import michal.edu.survey.Models.Section;
 import michal.edu.survey.Models.Store;
 
 public class DataSource {
@@ -140,6 +142,7 @@ public class DataSource {
         return gson.fromJson(jsonString, FullQuestionnaire.class);
     }
 
+    //TODO: do i need it?
     public void getTotalAverage(String userID){
 //        float ratingSum = (float) 0.0;
 //        final int ratingAmount = 0;
@@ -218,11 +221,11 @@ public class DataSource {
         });
     }
 
-
-    public void getAverageForSection(String userID, final int sectionID, final TextView staticNum, final TextView sectionName){
+    public ArrayList<String> getAverageForSection(String userID, final int sectionID, final FloatResultListener callback){
+        final ArrayList<String> mResults = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feedbacks").child(userID);
 
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 float ratingSumSection = 0;
@@ -232,8 +235,6 @@ public class DataSource {
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Feedback feedback = child.getValue(Feedback.class);
-                    String thisSectionName = feedback.getAnswerSections().get(sectionID).getSectionName();
-                    sectionName.setText(thisSectionName);
 
                     ArrayList<Answer> answers = feedback.getAnswerSections().get(sectionID).getAnswers();
                     for (Answer answer : answers) {
@@ -257,8 +258,13 @@ public class DataSource {
                 String sectionFinalRating = String.valueOf(a + b);
                 String toShow = sectionFinalRating.substring(0, 3);
                 System.out.println("Section final: " + (a+b));
+                mResults.add(toShow);
 
-                staticNum.setText(toShow);
+                if (mResults.isEmpty()){
+                    System.out.println("no results");
+                }else{
+                    callback.onResultListener(mResults);
+                }
             }
 
             @Override
@@ -267,5 +273,34 @@ public class DataSource {
             }
         });
 
+        return mResults;
+    }
+
+    public ArrayList<Feedback> getAllFeedbacks(String userID, final FeedbackListener callback){
+        final ArrayList<Feedback> mFeedbacks = new ArrayList<>();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Feedbacks").child(userID);
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Feedback feedback = snapshot.getValue(Feedback.class);
+                    mFeedbacks.add(feedback);
+                }
+
+                if (mFeedbacks.isEmpty()){
+                    System.out.println("no feedbacks");
+                }else {
+                    callback.onFeedbackListerner(mFeedbacks);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println(databaseError);
+            }
+        });
+
+        return mFeedbacks;
     }
 }
