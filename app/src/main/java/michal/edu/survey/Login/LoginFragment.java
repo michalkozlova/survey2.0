@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import michal.edu.survey.Models.Store;
 import michal.edu.survey.R;
 import michal.edu.survey.StatisticsFragment;
 
@@ -180,4 +182,17 @@ public class LoginFragment extends Fragment {
         return isPasswordValid;
     }
 
+    public static class LoginActivity extends AppCompatActivity {
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_login);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.loginContainer, QuestionnaireFragment.newInstance(Store.STORE_RESTAURANT))
+                    .commit();
+        }
+    }
 }
