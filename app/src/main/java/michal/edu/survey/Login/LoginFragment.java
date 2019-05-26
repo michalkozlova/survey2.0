@@ -2,6 +2,7 @@ package michal.edu.survey.Login;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import michal.edu.survey.MainActivity;
 import michal.edu.survey.Models.Store;
 import michal.edu.survey.R;
 import michal.edu.survey.StatisticsFragment;
@@ -84,7 +86,7 @@ public class LoginFragment extends Fragment {
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, new RegistrationFragment())
+                .replace(R.id.loginContainer, new RegistrationFragment())
                 .addToBackStack("")
                 .commit();
     }
@@ -103,11 +105,16 @@ public class LoginFragment extends Fragment {
                 showProgress(false);
 //                bottomBar.setVisibility(View.VISIBLE);
 
-                manager
-                        .beginTransaction()
-                        .replace(R.id.container, StatisticsFragment.newInstance(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-                        .disallowAddToBackStack()
-                        .commit();
+//                manager
+//                        .beginTransaction()
+//                        .replace(R.id.container, StatisticsFragment.newInstance(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+//                        .disallowAddToBackStack()
+//                        .commit();
+
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -148,7 +155,6 @@ public class LoginFragment extends Fragment {
     }
 
     ProgressDialog dialog;
-
     private void showProgress(boolean show) {
         if (dialog == null) {
             dialog = new ProgressDialog(getContext());

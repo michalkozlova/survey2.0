@@ -1,6 +1,7 @@
 package michal.edu.survey;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import michal.edu.survey.Login.LoginActivity;
 import michal.edu.survey.Login.LoginFragment;
 import michal.edu.survey.Models.Feedback;
 
@@ -53,12 +55,11 @@ public class StatisticsFragment extends Fragment {
                 switch (menuItem.getItemId()){
                     case R.id.action_log_out:
                         FirebaseAuth.getInstance().signOut();
-                        getActivity()
-                                .getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.container, new LoginFragment())
-                                .disallowAddToBackStack()
-                                .commit();
+
+                        Intent intent = new Intent(getContext(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+
                         System.out.println("log out");
                         return true;
                     default:

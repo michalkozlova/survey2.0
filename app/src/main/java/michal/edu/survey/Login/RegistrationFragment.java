@@ -203,7 +203,7 @@ public class RegistrationFragment extends Fragment {
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.container, QuestionnaireFragment.newInstance(storeType()))
+                        .replace(R.id.loginContainer, QuestionnaireFragment.newInstance(storeType()))
                         .disallowAddToBackStack()
                         .commit();
 
