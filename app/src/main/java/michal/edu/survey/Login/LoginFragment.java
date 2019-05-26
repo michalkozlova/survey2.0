@@ -34,7 +34,7 @@ public class LoginFragment extends Fragment {
 
     private EditText etEmail, etPassword;
     private Button btnLogin, btnRegistration;
-//    private View bottomBar;
+    //    private View bottomBar;
     private FragmentManager manager;
 
     public LoginFragment() {
@@ -68,7 +68,7 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
-    private void setInitialView(View v){
+    private void setInitialView(View v) {
         etEmail = v.findViewById(R.id.etEmail);
         etPassword = v.findViewById(R.id.etPassword);
         btnLogin = v.findViewById(R.id.btnContinue);
@@ -90,7 +90,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void login() {
-        if (!isEmailValid() | !isPasswordValid()){
+        if (!isEmailValid() | !isPasswordValid()) {
             return;
         }
 
@@ -139,11 +139,17 @@ public class LoginFragment extends Fragment {
 //                .commit();
 //    }
 
-    String email(){return etEmail.getText().toString();}
-    String password(){return etPassword.getText().toString();}
+    String email() {
+        return etEmail.getText().toString();
+    }
+
+    String password() {
+        return etPassword.getText().toString();
+    }
 
     ProgressDialog dialog;
-    private void showProgress(boolean show){
+
+    private void showProgress(boolean show) {
         if (dialog == null) {
             dialog = new ProgressDialog(getContext());
 
@@ -151,48 +157,35 @@ public class LoginFragment extends Fragment {
             dialog.setTitle("Please wait");
             dialog.setMessage("Logging you in...");
         }
-        if (show){
+        if (show) {
             dialog.show();
-        }else {
+        } else {
             dialog.dismiss();
         }
     }
 
-    private boolean isEmailValid(){
-        if (email().isEmpty()){
+    private boolean isEmailValid() {
+        if (email().isEmpty()) {
             etEmail.setError("Please put your email");
             return false;
         }
         boolean isEmailValid = email().matches(Patterns.EMAIL_ADDRESS.pattern());
-        if(!isEmailValid){
+        if (!isEmailValid) {
             etEmail.setError("Invalid email address");
         }
         return isEmailValid;
     }
 
-    private boolean isPasswordValid(){
-        if (password().isEmpty()){
+    private boolean isPasswordValid() {
+        if (password().isEmpty()) {
             etPassword.setError("Please put your password");
             return false;
         }
         boolean isPasswordValid = password().length() >= 6;
-        if (!isPasswordValid){
+        if (!isPasswordValid) {
             etPassword.setError("Password must contain at least 6 characters");
         }
         return isPasswordValid;
     }
 
-    public static class LoginActivity extends AppCompatActivity {
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_login);
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.loginContainer, QuestionnaireFragment.newInstance(Store.STORE_RESTAURANT))
-                    .commit();
-        }
-    }
 }
