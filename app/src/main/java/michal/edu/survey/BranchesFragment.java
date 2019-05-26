@@ -36,6 +36,7 @@ public class BranchesFragment extends Fragment {
     private ImageView cardImage;
     private Button btnAddBranch;
     private int branchesAmount;
+    private View bottomBar;
 
     public static BranchesFragment newInstance(String userID) {
 
@@ -56,6 +57,9 @@ public class BranchesFragment extends Fragment {
         firstLetter = v.findViewById(R.id.firstLetter);
         cardImage = v.findViewById(R.id.cardImage);
         btnAddBranch = v.findViewById(R.id.btnAddBranch);
+        bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
+
+        bottomBar.setVisibility(View.VISIBLE);
 
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffFEDC32"));

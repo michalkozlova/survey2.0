@@ -7,15 +7,13 @@ import michal.edu.survey.Models.Address;
 public class Branch implements Serializable {
 
     private String branchName;
-    private String branchPhone;
     private Address branchAddress;
 
     public Branch() {
     }
 
-    public Branch(String branchName, String branchPhone, Address branchAddress) {
+    public Branch(String branchName, Address branchAddress) {
         this.branchName = branchName;
-        this.branchPhone = branchPhone;
         this.branchAddress = branchAddress;
     }
 
@@ -25,14 +23,6 @@ public class Branch implements Serializable {
 
     public void setBranchName(String branchName) {
         this.branchName = branchName;
-    }
-
-    public String getBranchPhone() {
-        return branchPhone;
-    }
-
-    public void setBranchPhone(String branchPhone) {
-        this.branchPhone = branchPhone;
     }
 
     public Address getBranchAddress() {
@@ -47,7 +37,6 @@ public class Branch implements Serializable {
     public String toString() {
         return "Branch{" +
                 "branchName='" + branchName + '\'' +
-                ", branchPhone='" + branchPhone + '\'' +
                 ", branchAddress=" + branchAddress +
                 '}';
     }

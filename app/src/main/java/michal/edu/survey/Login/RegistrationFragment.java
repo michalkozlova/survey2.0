@@ -1,8 +1,8 @@
-package michal.edu.survey;
+package michal.edu.survey.Login;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import michal.edu.survey.Models.Store;
 import michal.edu.survey.Models.User;
+import michal.edu.survey.R;
 
 
 /**
@@ -36,6 +37,7 @@ public class RegistrationFragment extends Fragment {
     private EditText etFirstName, etLastName, etEmail, etStoreName, etPassword, etConfirmPassword;
     private Spinner spinnerStoreType;
     private Button btnContinue;
+//    private View bottomBar;
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -47,18 +49,7 @@ public class RegistrationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_registration, container, false);
 
-        etFirstName = v.findViewById(R.id.etFirstName);
-        etLastName = v.findViewById(R.id.etLastName);
-        etEmail = v.findViewById(R.id.etEmail);
-        etStoreName = v.findViewById(R.id.etStoreName);
-        etPassword = v.findViewById(R.id.etPassword);
-        etConfirmPassword = v.findViewById(R.id.etConfirmPassword);
-        spinnerStoreType = v.findViewById(R.id.spinnerStoreType);
-        btnContinue = v.findViewById(R.id.btnContinue);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.store_type, R.layout.spinner_item_type);
-        adapter.setDropDownViewResource(R.layout.spinner_item_type);
-        spinnerStoreType.setAdapter(adapter);
+        setInitialView(v);
 
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +59,26 @@ public class RegistrationFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private void setInitialView(View v){
+        etFirstName = v.findViewById(R.id.etFirstName);
+        etLastName = v.findViewById(R.id.etLastName);
+        etEmail = v.findViewById(R.id.etEmail);
+        etStoreName = v.findViewById(R.id.etStoreName);
+        etPassword = v.findViewById(R.id.etPassword);
+        etConfirmPassword = v.findViewById(R.id.etConfirmPassword);
+        spinnerStoreType = v.findViewById(R.id.spinnerStoreType);
+        btnContinue = v.findViewById(R.id.btnContinue);
+//        bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.store_type, R.layout.spinner_item_type);
+        adapter.setDropDownViewResource(R.layout.spinner_item_type);
+        spinnerStoreType.setAdapter(adapter);
+
+        getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffEA4C5F"));
+
+//        bottomBar.setVisibility(View.GONE);
     }
 
     private String firstName() {

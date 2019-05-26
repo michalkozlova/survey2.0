@@ -1,4 +1,4 @@
-package michal.edu.survey;
+package michal.edu.survey.Login;
 
 
 import android.app.ProgressDialog;
@@ -21,6 +21,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import michal.edu.survey.R;
+import michal.edu.survey.StatisticsFragment;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +32,7 @@ public class LoginFragment extends Fragment {
 
     private EditText etEmail, etPassword;
     private Button btnLogin, btnRegistration;
-    private View bottomBar;
+//    private View bottomBar;
     private FragmentManager manager;
 
     public LoginFragment() {
@@ -68,11 +71,11 @@ public class LoginFragment extends Fragment {
         etPassword = v.findViewById(R.id.etPassword);
         btnLogin = v.findViewById(R.id.btnContinue);
         btnRegistration = v.findViewById(R.id.btnRegistration);
-        bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
+//        bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffEA4C5F"));
 
-        bottomBar.setVisibility(View.INVISIBLE);
+//        bottomBar.setVisibility(View.GONE);
     }
 
     private void goToRegistration() {
@@ -96,11 +99,11 @@ public class LoginFragment extends Fragment {
             @Override
             public void onSuccess(AuthResult authResult) {
                 showProgress(false);
-                bottomBar.setVisibility(View.VISIBLE);
+//                bottomBar.setVisibility(View.VISIBLE);
 
                 manager
                         .beginTransaction()
-                        .replace(R.id.container, new StatisticsFragment())
+                        .replace(R.id.container, StatisticsFragment.newInstance(FirebaseAuth.getInstance().getCurrentUser().getUid()))
                         .disallowAddToBackStack()
                         .commit();
             }

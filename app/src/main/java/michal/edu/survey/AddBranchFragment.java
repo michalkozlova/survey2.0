@@ -24,7 +24,7 @@ import michal.edu.survey.Models.Branch;
 public class AddBranchFragment extends Fragment {
 
     private Button btnDone;
-    private EditText etBranchName, etStreet, etNum, etCity, etPhoneNumber;
+    private EditText etBranchName, etStreet, etNum, etCity;
     private String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
@@ -47,21 +47,25 @@ public class AddBranchFragment extends Fragment {
         etStreet = v.findViewById(R.id.etStreet);
         etNum = v.findViewById(R.id.etNum);
         etCity = v.findViewById(R.id.etCity);
-        etPhoneNumber = v.findViewById(R.id.etPhoneNumber);
 
         final int branchPosition = (int) getArguments().getSerializable("branchPosition");
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isNameValid() | !isPhoneValid() | !isStreetValid() | !isCityValid() | !isNumValid()){
+                if (!isNameValid() | !isStreetValid() | !isCityValid() | !isNumValid()){
                     return;
                 }
 
                 showProgress(true);
 
                 Address newAdress = new Address(city(), street(), Integer.valueOf(num()));
-                Branch newBranch = new Branch(branchName(), branchPhone(), newAdress);
+                Branch newBranch = new Branch(branchName(), newAdress);
+
+
+                //TODO: fix it
+//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+//                String key = ref.push().getKey();
 
                 DatabaseReference reference = FirebaseDatabase
                         .getInstance()
@@ -70,6 +74,7 @@ public class AddBranchFragment extends Fragment {
                         .child(userID)
                         .child("branches")
                         .child(String.valueOf(branchPosition));
+                        //.child(key);
                 reference.setValue(newBranch);
 
                 showProgress(false);
@@ -89,9 +94,6 @@ public class AddBranchFragment extends Fragment {
     private String branchName(){
         return etBranchName.getText().toString();
     }
-    private String branchPhone(){
-        return etPhoneNumber.getText().toString();
-    }
     private String street(){
         return etStreet.getText().toString();
     }
@@ -105,14 +107,6 @@ public class AddBranchFragment extends Fragment {
     private boolean isNameValid() {
         if (branchName().isEmpty()) {
             etBranchName.setError("Please put the name");
-            return false;
-        } else {
-            return true;
-        }
-    }
-    private boolean isPhoneValid() {
-        if (branchPhone().isEmpty()) {
-            etPhoneNumber.setError("Please put the phone number");
             return false;
         } else {
             return true;
