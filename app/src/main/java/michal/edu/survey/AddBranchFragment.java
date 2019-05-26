@@ -64,8 +64,8 @@ public class AddBranchFragment extends Fragment {
 
 
                 //TODO: fix it
-//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-//                String key = ref.push().getKey();
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                String key = ref.push().getKey();
 
                 DatabaseReference reference = FirebaseDatabase
                         .getInstance()
@@ -73,8 +73,8 @@ public class AddBranchFragment extends Fragment {
                         .child("Stores")
                         .child(userID)
                         .child("branches")
-                        .child(String.valueOf(branchPosition));
-                        //.child(key);
+//                        .child(String.valueOf(branchPosition));
+                        .child(key);
                 reference.setValue(newBranch);
 
                 showProgress(false);

@@ -26,8 +26,12 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 
+import michal.edu.survey.Models.Answer;
 import michal.edu.survey.Models.Branch;
+import michal.edu.survey.Models.Feedback;
 import michal.edu.survey.Models.FullQuestionnaire;
+import michal.edu.survey.Models.Question;
+import michal.edu.survey.Models.Section;
 import michal.edu.survey.Models.Store;
 
 public class DataSource {
@@ -54,6 +58,7 @@ public class DataSource {
                 }
 
                 if (mBranches.isEmpty()){
+                    callback.onBranchCallback(mBranches);
                     System.out.println("no branches");
                 }else {
                     callback.onBranchCallback(mBranches);
@@ -135,4 +140,132 @@ public class DataSource {
         return gson.fromJson(jsonString, FullQuestionnaire.class);
     }
 
+    public void getTotalAverage(String userID){
+//        float ratingSum = (float) 0.0;
+//        final int ratingAmount = 0;
+//        float yesNoSum = (float) 0.0;
+//        int yesNoAmout = 0;
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feedbacks").child(userID);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                float ratingSum = 0;
+                float ratingAmount = 0;
+                float yesNoSum = 0;
+                float yesNoAmout = 0;
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Feedback feedback = child.getValue(Feedback.class);
+                    System.out.println(feedback.getBranchName());
+
+                    for (int i = 0; i < 3; i++) {
+                        System.out.println(feedback.getAnswerSections().get(i).getSectionName());
+                        float ratingSumSection = 0;
+                        float ratingAmountSection = 0;
+                        float yesNoSumSection = 0;
+                        float yesNoAmountSection = 0;
+
+                        ArrayList<Answer> answers = feedback.getAnswerSections().get(i).getAnswers();
+                        for (Answer answer : answers) {
+                            if (answer.getQuestionType() == Question.ONE_FIVE){
+                                ratingSum+=answer.getAnswerValue();
+                                ratingAmount++;
+
+                                ratingSumSection+=answer.getAnswerValue();
+                                ratingAmountSection++;
+                            } else {
+                                yesNoSum+=answer.getAnswerValue();
+                                yesNoAmout++;
+
+                                yesNoSumSection+=answer.getAnswerValue();
+                                yesNoAmountSection++;
+                            }
+                        }
+
+                        float ratingAverageSection = ratingSumSection / ratingAmountSection;
+                        float yesNoAverageSection = yesNoSumSection * 5 / yesNoAmountSection;
+
+                        float a = ratingAverageSection * (ratingAmountSection / (ratingAmountSection + yesNoAmountSection));
+                        float b = yesNoAverageSection * (yesNoAmountSection / (ratingAmountSection + yesNoAmountSection));
+
+                        System.out.println("Section final: " + (a+b));
+                    }
+                }
+
+                System.out.println(ratingSum);
+                System.out.println(ratingAmount);
+                System.out.println(yesNoSum);
+                System.out.println(yesNoAmout);
+
+                float ratingAverage = ratingSum / ratingAmount;
+                System.out.println(ratingAverage);
+                float yesNoAverage = yesNoSum * 5 / yesNoAmout;
+                System.out.println(yesNoAverage);
+
+                float x = ratingAverage * (ratingAmount / (ratingAmount + yesNoAmout));
+                System.out.println(x);
+                float y = yesNoAverage * (yesNoAmout / (ratingAmount + yesNoAmout));
+                System.out.println(y);
+
+                System.out.println("final: " + (x+y));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println(databaseError);
+            }
+        });
+    }
+
+
+    public void getAverageForSection(String userID, final int sectionID, final TextView staticNum, final TextView sectionName){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feedbacks").child(userID);
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                float ratingSumSection = 0;
+                float ratingAmountSection = 0;
+                float yesNoSumSection = 0;
+                float yesNoAmountSection = 0;
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Feedback feedback = child.getValue(Feedback.class);
+                    String thisSectionName = feedback.getAnswerSections().get(sectionID).getSectionName();
+                    sectionName.setText(thisSectionName);
+
+                    ArrayList<Answer> answers = feedback.getAnswerSections().get(sectionID).getAnswers();
+                    for (Answer answer : answers) {
+                        if (answer.getQuestionType() == Question.ONE_FIVE){
+
+                            ratingSumSection+=answer.getAnswerValue();
+                            ratingAmountSection++;
+                        } else {
+                            yesNoSumSection+=answer.getAnswerValue();
+                            yesNoAmountSection++;
+                        }
+                    }
+                }
+
+                float ratingAverageSection = ratingSumSection / ratingAmountSection;
+                float yesNoAverageSection = yesNoSumSection * 5 / yesNoAmountSection;
+
+                float a = ratingAverageSection * (ratingAmountSection / (ratingAmountSection + yesNoAmountSection));
+                float b = yesNoAverageSection * (yesNoAmountSection / (ratingAmountSection + yesNoAmountSection));
+
+                String sectionFinalRating = String.valueOf(a + b);
+                String toShow = sectionFinalRating.substring(0, 3);
+                System.out.println("Section final: " + (a+b));
+
+                staticNum.setText(toShow);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println(databaseError);
+            }
+        });
+
+    }
 }

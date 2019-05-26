@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +30,10 @@ import michal.edu.survey.Models.Feedback;
  */
 public class StatisticsFragment extends Fragment {
 
+    private DataSource dataSource = DataSource.getInstance();
     private Toolbar toolbar;
+    private TextView tvStatFirstSection, tvStatSecondSection, tvStatThirdSection;
+    private TextView tvNameFirstSection, tvNameSecondSection, tvNameThirdSection;
 
     public static StatisticsFragment newInstance(String userID) {
 
@@ -47,6 +51,14 @@ public class StatisticsFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_statistics, container, false);
 
         toolbar = v.findViewById(R.id.toolbar);
+        tvStatFirstSection = v.findViewById(R.id.tvStatFirstSection);
+        tvStatSecondSection = v.findViewById(R.id.tvStatSecondSection);
+        tvStatThirdSection = v.findViewById(R.id.tvStatThirdSection);
+        tvNameFirstSection = v.findViewById(R.id.tvNameFirstSection);
+        tvNameSecondSection = v.findViewById(R.id.tvNameSecondSection);
+        tvNameThirdSection = v.findViewById(R.id.tvNameThirdSection);
+
+
         toolbar.inflateMenu(R.menu.main_menu);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -70,7 +82,15 @@ public class StatisticsFragment extends Fragment {
 
         String userID = (String) getArguments().getSerializable("userID");
 
-        queryTest(userID);
+//        queryTest(userID);
+
+        dataSource.getTotalAverage(userID);
+
+
+        dataSource.getAverageForSection(userID, 0, tvStatFirstSection, tvNameFirstSection);
+        dataSource.getAverageForSection(userID, 1, tvStatSecondSection, tvNameSecondSection);
+        dataSource.getAverageForSection(userID, 2, tvStatThirdSection, tvNameThirdSection);
+
         return v;
     }
 
@@ -103,7 +123,6 @@ public class StatisticsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Feedback feedback = child.getValue(Feedback.class);
-                    System.out.println("am I here?");
                     System.out.println(feedback);
                 }
             }
