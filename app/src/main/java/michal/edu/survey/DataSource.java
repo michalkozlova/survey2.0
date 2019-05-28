@@ -280,7 +280,7 @@ public class DataSource {
         final ArrayList<Feedback> mFeedbacks = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Feedbacks").child(userID);
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {

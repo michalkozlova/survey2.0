@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import michal.edu.survey.Adapters.FeedbackAdapter;
 import michal.edu.survey.Listeners.FeedbackListener;
@@ -46,8 +48,14 @@ public class AllFeedbacksFragment extends Fragment {
         dataSource.getAllFeedbacks(userID, new FeedbackListener() {
             @Override
             public void onFeedbackListener(ArrayList<Feedback> feedbacks) {
-                System.out.println(feedbacks);
-                FeedbackAdapter adapter = new FeedbackAdapter(feedbacks, getActivity());
+
+                //TODO: not the right thing to do
+                ArrayList<Feedback> revFeedbacks = new ArrayList<>();
+                for (int i = feedbacks.size()-1; i >=0 ; i--) {
+                    revFeedbacks.add(feedbacks.get(i));
+                }
+
+                FeedbackAdapter adapter = new FeedbackAdapter(revFeedbacks, getActivity());
                 rvFeedbacks.setLayoutManager(new LinearLayoutManager(getContext()));
                 rvFeedbacks.setAdapter(adapter);
             }

@@ -17,9 +17,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.hadiidbouk.charts.BarData;
+import com.hadiidbouk.charts.ChartProgressBar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
 import michal.edu.survey.Listeners.FloatResultListener;
 import michal.edu.survey.Login.LoginActivity;
@@ -109,9 +116,88 @@ public class StatisticsFragment extends Fragment {
         tvNameSecondSection.setText(Section.RESTAURANT_STAFF_2);
         tvNameThirdSection.setText(Section.RESTAURANT_FOOD_3);
 
+
+
+        chartTest();
+
         return v;
     }
 
+
+    private void chartTest() {
+        ArrayList<Long> allDatesReverse = new ArrayList<>();
+        ArrayList<Long> allDatesCorrect = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("kk:mm dd/MM/yyyy");
+
+        long currentTimeMillis = System.currentTimeMillis();
+        System.out.println("currentTimeMillis: " + currentTimeMillis);
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(currentTimeMillis);
+        c.set(Calendar.MILLISECOND, 0);
+
+
+        int mDay = c.get(Calendar.DATE);
+        int mMonth = c.get(Calendar.MONTH);
+        int mYear = c.get(Calendar.YEAR);
+        System.out.println("mDay: " + mDay + " mMonth: " + mMonth + " mYear: " + mYear);
+
+        c.set(mYear, mMonth, 1, 0, 0, 0);
+        long firstDayOfMonth = c.getTimeInMillis();
+        c.setTimeInMillis(firstDayOfMonth);
+        System.out.println("firstDayOfMonth: " + firstDayOfMonth);
+
+        String fullDateAndTime = formatter.format(new Date(firstDayOfMonth));
+        System.out.println("Full date and Time: " + fullDateAndTime);
+
+        for (int i = 0; i < 5; i++) {
+            c.set(Calendar.MONTH, mMonth-i);
+            long monthAgo = c.getTimeInMillis();
+            allDatesReverse.add(monthAgo);
+
+            System.out.println(monthAgo);
+            String monthAgoFull = formatter.format(new Date(monthAgo));
+            System.out.println(i + " months ago date: " + monthAgoFull);
+
+            long lastMinuteOfPreviousMonth = monthAgo - 60000;
+        }
+
+        for (int i = allDatesReverse.size() - 1; i >= 0; i--){
+            allDatesCorrect.add(allDatesReverse.get(i));
+        }
+
+        allDatesCorrect.add(currentTimeMillis);
+
+        for (int i = 0; i < allDatesCorrect.size() - 1; i++) {
+            String date = formatter.format(new Date(allDatesCorrect.get(i)));
+            System.out.println(date);
+        }
+
+
+//            c.add(Calendar.MINUTE, -1);
+//            long lastMinuteOfMonth = c.getTimeInMillis();
+//        System.out.println(lastMinuteOfMonth);
+//            String lastMinute = formatter.format(new Date(lastMinuteOfMonth));
+//            System.out.println("last Minute: " + lastMinute);
+//
+//        System.out.println(monthAgo-lastMinuteOfMonth);
+
+
+
+
+//        c.add(Calendar.MONTH, -5);
+//        long timeMillis5MonthsAgo = c.getTimeInMillis();
+//        System.out.println("timeMillis5MonthsAgo: " + timeMillis5MonthsAgo);
+//        Calendar c1 = Calendar.getInstance();
+//        c1.setTimeInMillis(timeMillis5MonthsAgo);
+//        int newMonth = c1.get(Calendar.MONTH);
+//        int newYear = c1.get(Calendar.YEAR);
+//        System.out.println("newMonth: " + newMonth);
+//        System.out.println("newYear: " + newYear);
+
+//        c.setTime(date);
+
+    }
 
     private void queryTest(String userID){
         DatabaseReference ref = FirebaseDatabase.getInstance()
