@@ -46,7 +46,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.Feedba
         String date = fullDateAndTime.substring(6, 16);
         feedbackViewHolder.tvDate.setText(date);
 
-        feedbackViewHolder.blueButton.setText(dataSource.getRatingForFeedback(feedback));
+        feedbackViewHolder.blueButton.setText(dataSource.showResult(dataSource.getRatingForFeedback(feedback)));
     }
 
     @Override

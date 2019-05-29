@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 import michal.edu.survey.Listeners.BranchListener;
 import michal.edu.survey.Listeners.FeedbackListener;
-import michal.edu.survey.Listeners.FloatResultListener;
+import michal.edu.survey.Listeners.StringResultListener;
 import michal.edu.survey.Models.Answer;
 import michal.edu.survey.Models.Branch;
 import michal.edu.survey.Models.Feedback;
@@ -221,7 +221,8 @@ public class DataSource {
         });
     }
 
-    public ArrayList<String> getAverageForSection(String userID, final int sectionID, final FloatResultListener callback){
+    //TODO: change to ArrayList<Float>
+    public ArrayList<String> getAverageForSection(String userID, final int sectionID, final StringResultListener callback){
         final ArrayList<String> mResults = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Feedbacks").child(userID);
 
@@ -304,7 +305,7 @@ public class DataSource {
         return mFeedbacks;
     }
 
-    public String getRatingForFeedback(Feedback feedback){
+    public float getRatingForFeedback(Feedback feedback){
         float ratingSum = 0;
         float ratingAmount = 0;
         float yesNoSum = 0;
@@ -324,17 +325,31 @@ public class DataSource {
         }
 
         float ratingAverage = ratingSum / ratingAmount;
-        System.out.println(ratingAverage);
+//        System.out.println(ratingAverage);
         float yesNoAverage = yesNoSum * 5 / yesNoAmout;
-        System.out.println(yesNoAverage);
+//        System.out.println(yesNoAverage);
 
         float x = ratingAverage * (ratingAmount / (ratingAmount + yesNoAmout));
-        System.out.println(x);
+//        System.out.println(x);
         float y = yesNoAverage * (yesNoAmout / (ratingAmount + yesNoAmout));
-        System.out.println(y);
+//        System.out.println(y);
 
-        float result = x + y;
-        String toShow = String.valueOf(result).substring(0,3);
-        return toShow;
+        return x+y;
     }
+
+    public String showResult(Float floatResult){
+        return String.valueOf(floatResult).substring(0,3);
+    }
+
+    public float getRatingForSeveralFeedbacks(ArrayList<Feedback> feedbacks){
+        float sum = 0;
+        ArrayList<Float> results = new ArrayList<>();
+        for (int i = 0; i < feedbacks.size(); i++) {
+            float thisResult = getRatingForFeedback(feedbacks.get(i));
+            sum+=thisResult;
+        }
+
+        return sum / feedbacks.size();
+    }
+
 }
