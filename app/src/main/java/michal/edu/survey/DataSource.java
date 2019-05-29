@@ -24,7 +24,9 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import michal.edu.survey.Listeners.BranchListener;
 import michal.edu.survey.Listeners.FeedbackListener;
@@ -350,6 +352,43 @@ public class DataSource {
         }
 
         return sum / feedbacks.size();
+    }
+
+    public ArrayList<Feedback> queryForSpecificMonth(String userID, long firstDayOfMonth, long lastDayOfMonth, final FeedbackListener callback){
+        final ArrayList<Feedback> mResult = new ArrayList<>();
+        final SimpleDateFormat formatter = new SimpleDateFormat("kk:mm dd/MM/yyyy");
+        final String firstDate = formatter.format(new Date(firstDayOfMonth));
+        final String lastDate = formatter.format(new Date(lastDayOfMonth));
+
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("Feedbacks")
+                .child(userID);
+
+        ref.orderByChild("timestamp").startAt(firstDayOfMonth).endAt(lastDayOfMonth).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Feedback feedback = snapshot.getValue(Feedback.class);
+                    mResult.add(feedback);
+                }
+
+                if (mResult.isEmpty()){
+                    System.out.println(firstDate + " - " + lastDate);
+                    System.out.println("no feedbacks that time");
+                    callback.onFeedbackListener(mResult);
+                }else {
+                    System.out.println(firstDate + " - " + lastDate);
+                    callback.onFeedbackListener(mResult);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println(databaseError);
+            }
+        });
+
+        return mResult;
     }
 
 }

@@ -1,6 +1,7 @@
 package michal.edu.survey;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -47,7 +48,7 @@ import michal.edu.survey.Models.Section;
  */
 public class StatisticsFragment extends Fragment {
 
-    public static long ONE_MINUTE = 60000;
+    private static long ONE_MINUTE = 60000;
 
     private DataSource dataSource = DataSource.getInstance();
     private Toolbar toolbar;
@@ -55,13 +56,8 @@ public class StatisticsFragment extends Fragment {
     private TextView tvNameFirstSection, tvNameSecondSection, tvNameThirdSection;
     private String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private BarChart chart;
-    private Boolean monthsAgo5 = false;
-    private Boolean monthsAgo4 = false;
-    private Boolean monthsAgo3 = false;
-    private Boolean monthsAgo2 = false;
-    private Boolean monthsAgo = false;
-    Float[] floats = new Float[5];
-    private Float januryFL, februaryFL, marchFL, aprilFL, mayFL;
+    private Float[] floats = new Float[5];
+    private Boolean[] listIsReady = {false, false, false, false, false};
 
     public static StatisticsFragment newInstance(String userID) {
 
@@ -77,6 +73,8 @@ public class StatisticsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_statistics, container, false);
+
+        showProgress(true);
 
         toolbar = v.findViewById(R.id.toolbar);
         tvStatFirstSection = v.findViewById(R.id.tvStatFirstSection);
@@ -140,85 +138,21 @@ public class StatisticsFragment extends Fragment {
 
         ArrayList<Long> dates = getDatesFor5Months();
 
-//        queryForLast5Months();
-
-        ArrayList<Feedback> january = queryForSpecificMonth(dates.get(0), dates.get(1) - ONE_MINUTE, new FeedbackListener() {
-            @Override
-            public void onFeedbackListener(ArrayList<Feedback> feedbacks) {
-                if (!feedbacks.isEmpty()) {
-                    floats[0] = dataSource.getRatingForSeveralFeedbacks(feedbacks);
-                }else {
-                    floats[0] = 0f;
+        for (int i = 0; i < 5; i++) {
+            final int finalI = i;
+            dataSource.queryForSpecificMonth(userID, dates.get(i), dates.get(i + 1) - ONE_MINUTE, new FeedbackListener() {
+                @Override
+                public void onFeedbackListener(ArrayList<Feedback> feedbacks) {
+                    if (!feedbacks.isEmpty()) {
+                        floats[finalI] = dataSource.getRatingForSeveralFeedbacks(feedbacks);
+                    }else {
+                        floats[finalI] = 0f;
+                    }
+                    listIsReady[finalI] = true;
+                    setChart();
                 }
-                monthsAgo5 = true;
-                setChart();
-            }
-        });
-
-
-        ArrayList<Feedback> february = queryForSpecificMonth(dates.get(1), dates.get(2) - ONE_MINUTE, new FeedbackListener() {
-            @Override
-            public void onFeedbackListener(ArrayList<Feedback> feedbacks) {
-                if (!feedbacks.isEmpty()) {
-                    floats[1] = dataSource.getRatingForSeveralFeedbacks(feedbacks);
-                }else {
-                    floats[1] = 0f;
-                }
-                monthsAgo4 = true;
-                setChart();
-            }
-        });
-
-
-        ArrayList<Feedback> march = queryForSpecificMonth(dates.get(2), dates.get(3) - ONE_MINUTE, new FeedbackListener() {
-            @Override
-            public void onFeedbackListener(ArrayList<Feedback> feedbacks) {
-                if (!feedbacks.isEmpty()) {
-                    floats[2] = dataSource.getRatingForSeveralFeedbacks(feedbacks);
-                }else {
-                    floats[2] = 0f;
-                }
-                monthsAgo3 = true;
-                setChart();
-            }
-        });
-
-
-        ArrayList<Feedback> april = queryForSpecificMonth(dates.get(3), dates.get(4) - ONE_MINUTE, new FeedbackListener() {
-            @Override
-            public void onFeedbackListener(ArrayList<Feedback> feedbacks) {
-                if (!feedbacks.isEmpty()) {
-                    floats[3] = dataSource.getRatingForSeveralFeedbacks(feedbacks);
-                }else {
-                    floats[3] = 0f;
-                }
-                monthsAgo2 = true;
-                setChart();
-            }
-        });
-
-
-        ArrayList<Feedback> may = queryForSpecificMonth(dates.get(4), dates.get(5), new FeedbackListener() {
-            @Override
-            public void onFeedbackListener(ArrayList<Feedback> feedbacks) {
-
-                if (!feedbacks.isEmpty()) {
-                    floats[4] = dataSource.getRatingForSeveralFeedbacks(feedbacks);
-                }
-
-                monthsAgo = true;
-                setChart();
-            }
-        });
-
-//        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-//        executorService.scheduleAtFixedRate(new Runnable() {
-//            @Override
-//            public void run() {
-//                setChart();
-//            }
-//        }, 0, 1, TimeUnit.SECONDS);
-
+            });
+        }
 
 
         return v;
@@ -226,28 +160,18 @@ public class StatisticsFragment extends Fragment {
 
 
     private void setChart(){
-//        if (!monthsAgo | !monthsAgo2 | !monthsAgo3 | !monthsAgo4 | monthsAgo5){
-//            System.out.println("not yet: monthsAgo=" + monthsAgo + "; monthsAgo2=" + monthsAgo2 + "; " +
-//                    "monthsAgo3=" + monthsAgo3 + "; monthsAgo4=" + monthsAgo4 + "; monthsAgo5=" + monthsAgo5);
-//            return;
-//        }
-
-        if (monthsAgo && monthsAgo2 && monthsAgo3 && monthsAgo4 && monthsAgo5){
+        if (listIsReady[0] && listIsReady[1] && listIsReady[2] && listIsReady[3] && listIsReady[4]){
             System.out.println("now we will make a chart");
             final List<BarEntry> entries = new ArrayList<>();
-
-//            entries.add(new BarEntry(1f, januryFL));
-//            entries.add(new BarEntry(2f, februaryFL));
-//            entries.add(new BarEntry(3f, marchFL));
-//            entries.add(new BarEntry(4f, aprilFL));
-//            entries.add(new BarEntry(5f, mayFL));
 
             for (int i = 0; i < floats.length; i++) {
                 entries.add(new BarEntry(i, floats[i]));
             }
 
             BarDataSet dataSet = new BarDataSet(entries, "Label");
-            dataSet.setColor(Color.MAGENTA);
+//            dataSet.setColors(new int[]{R.color.blue, R.color.pink, R.color.yellow, R.color.blue, R.color.pink});
+
+            dataSet.setColor(R.color.blue);
 
             BarData data = new BarData(dataSet);
             data.setBarWidth(0.5f);
@@ -258,7 +182,7 @@ public class StatisticsFragment extends Fragment {
             chart.invalidate();
         }
 
-
+        showProgress(false);
     }
 
     private ArrayList<Long> getDatesFor5Months() {
@@ -341,41 +265,20 @@ public class StatisticsFragment extends Fragment {
 
     }
 
-    private ArrayList<Feedback> queryForSpecificMonth(long firstDayOfMonth, long lastDayOfMonth, final FeedbackListener callback){
-        final ArrayList<Feedback> mResult = new ArrayList<>();
-        final SimpleDateFormat formatter = new SimpleDateFormat("kk:mm dd/MM/yyyy");
-        final String firstDate = formatter.format(new Date(firstDayOfMonth));
-        final String lastDate = formatter.format(new Date(lastDayOfMonth));
+    ProgressDialog dialog;
+    private void showProgress(boolean show){
+        if (dialog == null) {
+            dialog = new ProgressDialog(getContext());
 
-        DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference("Feedbacks")
-                .child(userID);
-
-        ref.orderByChild("timestamp").startAt(firstDayOfMonth).endAt(lastDayOfMonth).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Feedback feedback = snapshot.getValue(Feedback.class);
-                    mResult.add(feedback);
-                }
-
-                if (mResult.isEmpty()){
-                    System.out.println(firstDate + " - " + lastDate);
-                    System.out.println("no feedbacks that time");
-                    callback.onFeedbackListener(mResult);
-                }else {
-                    System.out.println(firstDate + " - " + lastDate);
-                    callback.onFeedbackListener(mResult);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println(databaseError);
-            }
-        });
-
-        return mResult;
+            dialog.setCancelable(true);
+            dialog.setTitle("Please wait");
+            dialog.setMessage("Loading...");
+        }
+        if (show){
+            dialog.show();
+        }else {
+            dialog.dismiss();
+        }
     }
 
     private void queryForLast5Months(){
