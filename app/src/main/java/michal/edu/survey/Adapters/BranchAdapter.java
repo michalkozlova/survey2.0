@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
+
+import michal.edu.survey.BranchFeedbackFragment;
 import michal.edu.survey.Models.Branch;
 import michal.edu.survey.R;
 
@@ -42,7 +44,12 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(activity, "hey-hey!", Toast.LENGTH_SHORT).show();
+                activity
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, BranchFeedbackFragment.newInstance(branch))
+                        .addToBackStack("")
+                        .commit();
             }
         });
     }

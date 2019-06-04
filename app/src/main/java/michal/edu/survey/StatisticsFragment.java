@@ -136,7 +136,7 @@ public class StatisticsFragment extends Fragment {
 
 
 
-        ArrayList<Long> dates = getDatesFor5Months();
+        ArrayList<Long> dates = dataSource.getDatesFor5Months();
 
         for (int i = 0; i < 5; i++) {
             final int finalI = i;
@@ -185,86 +185,6 @@ public class StatisticsFragment extends Fragment {
         showProgress(false);
     }
 
-    private ArrayList<Long> getDatesFor5Months() {
-        ArrayList<Long> allDatesReverse = new ArrayList<>();
-        ArrayList<Long> allDatesCorrect = new ArrayList<>();
-        SimpleDateFormat formatter = new SimpleDateFormat("kk:mm dd/MM/yyyy");
-
-        long currentTimeMillis = System.currentTimeMillis();
-//        System.out.println("currentTimeMillis: " + currentTimeMillis);
-
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(currentTimeMillis);
-        c.set(Calendar.MILLISECOND, 0);
-
-
-        int mDay = c.get(Calendar.DATE);
-        int mMonth = c.get(Calendar.MONTH);
-        int mYear = c.get(Calendar.YEAR);
-//        System.out.println("mDay: " + mDay + " mMonth: " + mMonth + " mYear: " + mYear);
-
-        c.set(mYear, mMonth, 1, 0, 0, 0);
-        long firstDayOfMonth = c.getTimeInMillis();
-        c.setTimeInMillis(firstDayOfMonth);
-//        System.out.println("firstDayOfMonth: " + firstDayOfMonth);
-
-        String fullDateAndTime = formatter.format(new Date(firstDayOfMonth));
-//        System.out.println("Full date and Time: " + fullDateAndTime);
-
-        for (int i = 0; i < 5; i++) {
-            c.set(Calendar.MONTH, mMonth-i);
-            long monthAgo = c.getTimeInMillis();
-            allDatesReverse.add(monthAgo);
-
-//            System.out.println(monthAgo);
-            String monthAgoFull = formatter.format(new Date(monthAgo));
-            System.out.println(i + " months ago date: " + monthAgoFull);
-
-            long lastMinuteOfPreviousMonth = monthAgo - 60000;
-        }
-
-        for (int i = allDatesReverse.size() - 1; i >= 0; i--){
-            allDatesCorrect.add(allDatesReverse.get(i));
-        }
-
-        allDatesCorrect.add(currentTimeMillis);
-
-
-        System.out.println(allDatesCorrect);
-
-        for (int i = 0; i < allDatesCorrect.size(); i++) {
-            String date = formatter.format(new Date(allDatesCorrect.get(i)));
-            System.out.println(date);
-        }
-
-    return allDatesCorrect;
-
-
-//            c.add(Calendar.MINUTE, -1);
-//            long lastMinuteOfMonth = c.getTimeInMillis();
-//        System.out.println(lastMinuteOfMonth);
-//            String lastMinute = formatter.format(new Date(lastMinuteOfMonth));
-//            System.out.println("last Minute: " + lastMinute);
-//
-//        System.out.println(monthAgo-lastMinuteOfMonth);
-
-
-
-
-//        c.add(Calendar.MONTH, -5);
-//        long timeMillis5MonthsAgo = c.getTimeInMillis();
-//        System.out.println("timeMillis5MonthsAgo: " + timeMillis5MonthsAgo);
-//        Calendar c1 = Calendar.getInstance();
-//        c1.setTimeInMillis(timeMillis5MonthsAgo);
-//        int newMonth = c1.get(Calendar.MONTH);
-//        int newYear = c1.get(Calendar.YEAR);
-//        System.out.println("newMonth: " + newMonth);
-//        System.out.println("newYear: " + newYear);
-
-//        c.setTime(date);
-
-    }
-
     ProgressDialog dialog;
     private void showProgress(boolean show){
         if (dialog == null) {
@@ -290,7 +210,7 @@ public class StatisticsFragment extends Fragment {
                 .getReference("Feedbacks")
                 .child(userID);
 
-        ArrayList<Long> dates = getDatesFor5Months();
+        ArrayList<Long> dates = dataSource.getDatesFor5Months();
 
         for (int i = 0; i < dates.size()-1; i++) {
             System.out.println(i);

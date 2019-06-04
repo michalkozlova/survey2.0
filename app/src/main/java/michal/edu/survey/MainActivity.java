@@ -32,12 +32,6 @@ public class MainActivity extends AppCompatActivity {
                             .replace(R.id.container, StatisticsFragment.newInstance(currentUserID()))
                             .commit();
                     return true;
-                case R.id.navigation_all_feedbacks:
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.container, AllFeedbacksFragment.newInstance(currentUserID()))
-                            .commit();
-                    return true;
             }
             return false;
         }

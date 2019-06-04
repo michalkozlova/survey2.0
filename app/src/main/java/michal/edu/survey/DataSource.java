@@ -26,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import michal.edu.survey.Listeners.BranchListener;
@@ -279,7 +280,7 @@ public class DataSource {
         return mResults;
     }
 
-    public ArrayList<Feedback> getAllFeedbacks(String userID, final FeedbackListener callback){
+    public ArrayList<Feedback> getAllFeedbacks(String userID, final String branchName, final FeedbackListener callback){
         final ArrayList<Feedback> mFeedbacks = new ArrayList<>();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Feedbacks").child(userID);
 
@@ -288,7 +289,13 @@ public class DataSource {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Feedback feedback = snapshot.getValue(Feedback.class);
-                    mFeedbacks.add(feedback);
+                    if (branchName != null){
+                        if (feedback.getBranchName().equals(branchName)){
+                            mFeedbacks.add(feedback);
+                        }
+                    }else {
+                        mFeedbacks.add(feedback);
+                    }
                 }
 
                 if (mFeedbacks.isEmpty()){
@@ -339,6 +346,7 @@ public class DataSource {
         return x+y;
     }
 
+    //TODO: use it
     public String showResult(Float floatResult){
         return String.valueOf(floatResult).substring(0,3);
     }
@@ -389,6 +397,57 @@ public class DataSource {
         });
 
         return mResult;
+    }
+
+    public ArrayList<Long> getDatesFor5Months(){
+        ArrayList<Long> allDatesReverse = new ArrayList<>();
+        ArrayList<Long> allDatesCorrect = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("kk:mm dd/MM/yyyy");
+
+        long currentTimeMillis = System.currentTimeMillis();
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(currentTimeMillis);
+        c.set(Calendar.MILLISECOND, 0);
+
+
+        int mDay = c.get(Calendar.DATE);
+        int mMonth = c.get(Calendar.MONTH);
+        int mYear = c.get(Calendar.YEAR);
+
+        c.set(mYear, mMonth, 1, 0, 0, 0);
+        long firstDayOfMonth = c.getTimeInMillis();
+        c.setTimeInMillis(firstDayOfMonth);
+
+//        String fullDateAndTime = formatter.format(new Date(firstDayOfMonth));
+//        System.out.println("Full date and Time: " + fullDateAndTime);
+
+        for (int i = 0; i < 5; i++) {
+            c.set(Calendar.MONTH, mMonth-i);
+            long monthAgo = c.getTimeInMillis();
+            allDatesReverse.add(monthAgo);
+
+            String monthAgoFull = formatter.format(new Date(monthAgo));
+            System.out.println(i + " months ago date: " + monthAgoFull);
+
+//            long lastMinuteOfPreviousMonth = monthAgo - 60000;
+        }
+
+        for (int i = allDatesReverse.size() - 1; i >= 0; i--){
+            allDatesCorrect.add(allDatesReverse.get(i));
+        }
+
+        allDatesCorrect.add(currentTimeMillis);
+
+
+        System.out.println(allDatesCorrect);
+
+        for (int i = 0; i < allDatesCorrect.size(); i++) {
+            String date = formatter.format(new Date(allDatesCorrect.get(i)));
+            System.out.println(date);
+        }
+
+        return allDatesCorrect;
     }
 
 }
