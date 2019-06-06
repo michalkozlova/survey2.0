@@ -16,10 +16,15 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -181,6 +186,40 @@ public class StatisticsFragment extends Fragment {
             chart.setFitBars(true);
             chart.invalidate();
         }
+
+
+        YAxis left = chart.getAxisLeft();
+        chart.getAxisRight().setEnabled(false);
+        left.setDrawGridLines(false);
+        left.setDrawZeroLine(true);
+
+        left.setAxisMinimum(0f);
+        left.setAxisMaximum(5f);
+        left.setGranularity(1f);
+
+        left.setTextColor(Color.RED);
+
+
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setDrawGridLines(false);
+        xAxis.setTextSize(14f);
+
+
+        long currentTimeMillis = System.currentTimeMillis();
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(currentTimeMillis);
+        int mMonth = c.get(Calendar.MONTH);
+        System.out.println("lastMonth: " + mMonth);
+
+        xAxis.setValueFormatter(new MyXAxisFormatter(mMonth + 1));
+
+
+
+
+
 
         showProgress(false);
     }
