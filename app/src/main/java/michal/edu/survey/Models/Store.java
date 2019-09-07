@@ -10,17 +10,18 @@ public class Store {
     private String storeID;
 //    private ArrayList<Branch> branches;
 //    private ArrayList<Section> questionnaire;
+    private Boolean hasBranches;
 
     public Store() {
     }
 
-    public Store(String storeName, Integer storeType, String storeID/*, ArrayList<Branch> branches, ArrayList<Section> questionnaire*/) {
+    public Store(String storeName, int storeType, String storeID, Boolean hasBranches) {
         this.storeName = storeName;
         this.storeType = storeType;
         this.storeID = storeID;
-//        this.branches = branches;
-//        this.questionnaire = questionnaire;
+        this.hasBranches = hasBranches;
     }
+
 
     public String getStoreName() {
         return storeName;
@@ -46,21 +47,13 @@ public class Store {
         this.storeID = storeID;
     }
 
-//    public ArrayList<Branch> getBranches() {
-//        return branches;
-//    }
-//
-//    public void setBranches(ArrayList<Branch> branches) {
-//        this.branches = branches;
-//    }
-//
-//    public ArrayList<Section> getQuestionnaire() {
-//        return questionnaire;
-//    }
-//
-//    public void setQuestionnaire(ArrayList<Section> questionnaire) {
-//        this.questionnaire = questionnaire;
-//    }
+    public Boolean getHasBranches() {
+        return hasBranches;
+    }
+
+    public void setHasBranches(Boolean hasBranches) {
+        this.hasBranches = hasBranches;
+    }
 
     @Override
     public String toString() {

@@ -191,7 +191,7 @@ public class RegistrationFragment extends Fragment {
 
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 User newUser = new User(firstName(), lastName(), email());
-                Store newStore = new Store(storeName(), storeType(), userId);
+                Store newStore = new Store(storeName(), storeType(), userId, false);
 
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 

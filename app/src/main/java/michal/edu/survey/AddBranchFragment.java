@@ -14,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
+import michal.edu.survey.Listeners.BranchListener;
 import michal.edu.survey.Models.Address;
 import michal.edu.survey.Models.Branch;
 
@@ -23,6 +26,7 @@ import michal.edu.survey.Models.Branch;
  */
 public class AddBranchFragment extends Fragment {
 
+    private DataSource dataSource = DataSource.getInstance();
     private Button btnDone;
     private EditText etBranchName, etStreet, etNum, etCity;
     private String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -59,12 +63,11 @@ public class AddBranchFragment extends Fragment {
 
                 showProgress(true);
 
-                Address newAdress = new Address(city(), street(), Integer.valueOf(num()));
-                Branch newBranch = new Branch(branchName(), newAdress);
+                Address newAddress = new Address(city(), street(), Integer.valueOf(num()));
+                Branch newBranch = new Branch(branchName(), newAddress);
 
 
-                //TODO: fix it
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                 String key = ref.push().getKey();
 
                 DatabaseReference reference = FirebaseDatabase
@@ -73,18 +76,31 @@ public class AddBranchFragment extends Fragment {
                         .child("Stores")
                         .child(userID)
                         .child("branches")
-//                        .child(String.valueOf(branchPosition));
                         .child(key);
                 reference.setValue(newBranch);
 
-                showProgress(false);
 
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, BranchesFragment.newInstance(userID))
-                        .disallowAddToBackStack()
-                        .commit();
+
+                dataSource.getBranchesFromFirebase(userID, new BranchListener() {
+                    @Override
+                    public void onBranchCallback(ArrayList<Branch> branches) {
+                        if (branches.size() == 1){
+                            ref.child("Stores").child(userID).child("hasBranches").setValue(true);
+                        }
+
+                        showProgress(false);
+
+                        getActivity()
+                                .getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, BranchesFragment.newInstance(userID))
+                                .disallowAddToBackStack()
+                                .commit();
+
+                    }
+                });
+
+
             }
         });
 

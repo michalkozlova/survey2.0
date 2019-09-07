@@ -168,15 +168,28 @@ public class StatisticsFragment extends Fragment {
         if (listIsReady[0] && listIsReady[1] && listIsReady[2] && listIsReady[3] && listIsReady[4]){
             System.out.println("now we will make a chart");
             final List<BarEntry> entries = new ArrayList<>();
+            int[] colors = new int[5];
 
             for (int i = 0; i < floats.length; i++) {
                 entries.add(new BarEntry(i, floats[i]));
+                int color;
+                if (floats[i] >= 4){
+                    color = Color.argb(255, 29, 142, 9);
+                    colors[i] = color;
+                } else if (floats[i] < 4 && floats[i] > 3){
+                    color = Color.argb(255, 252, 204, 0);
+                    colors[i] = color;
+                } else {
+                    color = Color.argb(255, 255, 54, 88);
+                    colors[i] = color;
+                }
             }
 
-            BarDataSet dataSet = new BarDataSet(entries, "Label");
-//            dataSet.setColors(new int[]{R.color.blue, R.color.pink, R.color.yellow, R.color.blue, R.color.pink});
+            BarDataSet dataSet = new BarDataSet(entries, "Last 5 months");
 
-            dataSet.setColor(R.color.blue);
+            dataSet.setLabel("");
+
+            dataSet.setColors(colors);
 
             BarData data = new BarData(dataSet);
             data.setBarWidth(0.5f);
@@ -215,10 +228,6 @@ public class StatisticsFragment extends Fragment {
         System.out.println("lastMonth: " + mMonth);
 
         xAxis.setValueFormatter(new MyXAxisFormatter(mMonth + 1));
-
-
-
-
 
 
         showProgress(false);
